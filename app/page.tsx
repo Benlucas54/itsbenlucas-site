@@ -2,36 +2,40 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import ProblemSection from "@/components/ProblemSection";
 import SolutionSection from "@/components/SolutionSection";
+import PromptTerminal from "@/components/PromptTerminal";
 import SocialProof from "@/components/SocialProof";
-import ApplicationForm from "@/components/ApplicationForm";
+import BookingEmbed from "@/components/BookingEmbed";
 import PromptPackSignup from "@/components/PromptPackSignup";
 import AboutSection from "@/components/AboutSection";
 import Footer from "@/components/Footer";
-import FadeInOnScroll from "@/components/FadeInOnScroll";
+import MotionSection from "@/components/motion/MotionSection";
 
 export default function Home() {
   return (
     <>
       <Navbar />
       <Hero />
-      <FadeInOnScroll>
+      <MotionSection>
         <ProblemSection />
-      </FadeInOnScroll>
-      <FadeInOnScroll>
+      </MotionSection>
+      <MotionSection>
         <SolutionSection />
-      </FadeInOnScroll>
-      <FadeInOnScroll>
+      </MotionSection>
+      <MotionSection>
+        <PromptTerminal />
+      </MotionSection>
+      <MotionSection>
         <SocialProof />
-      </FadeInOnScroll>
-      <FadeInOnScroll>
-        <ApplicationForm />
-      </FadeInOnScroll>
-      <FadeInOnScroll>
+      </MotionSection>
+      <MotionSection>
+        <BookingEmbed />
+      </MotionSection>
+      <MotionSection>
         <PromptPackSignup />
-      </FadeInOnScroll>
-      <FadeInOnScroll>
+      </MotionSection>
+      <MotionSection>
         <AboutSection />
-      </FadeInOnScroll>
+      </MotionSection>
       <Footer />
     </>
   );

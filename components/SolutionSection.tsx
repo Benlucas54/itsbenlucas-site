@@ -1,3 +1,8 @@
+"use client";
+
+import { motion } from "framer-motion";
+import StaggerContainer from "@/components/motion/StaggerContainer";
+
 const cards = [
   {
     title: "AI App Building",
@@ -16,6 +21,15 @@ const cards = [
   },
 ];
 
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" as const },
+  },
+};
+
 export default function SolutionSection() {
   return (
     <section className="bg-brand-white px-6 py-20 md:py-28">
@@ -30,19 +44,25 @@ export default function SolutionSection() {
           yourself. I&apos;m documenting the whole journey and helping others do
           the same.
         </p>
-        <div className="grid gap-6 md:grid-cols-3">
+        <StaggerContainer className="grid gap-6 md:grid-cols-3">
           {cards.map((card) => (
-            <div
+            <motion.div
               key={card.title}
-              className="rounded-lg border border-brand-divider bg-brand-white-secondary p-8"
+              variants={cardVariants}
+              whileHover={{
+                y: -4,
+                boxShadow: "0 8px 24px rgba(18,18,18,0.08)",
+                transition: { type: "spring", stiffness: 300, damping: 20 },
+              }}
+              className="rounded-lg border border-brand-divider bg-brand-white-secondary p-8 transition-colors"
             >
               <h3 className="mb-3 text-xl font-bold text-brand-black">
                 {card.title}
               </h3>
               <p className="text-brand-black-secondary">{card.description}</p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </StaggerContainer>
       </div>
     </section>
   );

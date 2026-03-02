@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { motion } from "framer-motion";
 
 const included = [
   "Prompts for your first AI product idea",
@@ -8,6 +9,71 @@ const included = [
   "Automation starters to save you hours",
   "Access to a live Notion database you can duplicate",
 ];
+
+function AnimatedCheckmark() {
+  return (
+    <motion.svg
+      initial={{ scale: 0.8, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      width="64"
+      height="64"
+      viewBox="0 0 64 64"
+      fill="none"
+      className="mx-auto mb-6"
+    >
+      <motion.circle
+        cx="32"
+        cy="32"
+        r="30"
+        stroke="#e05a33"
+        strokeWidth="2"
+        fill="none"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      />
+      <motion.path
+        d="M20 33 L28 41 L44 25"
+        stroke="#e05a33"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 0.3, delay: 0.4, ease: "easeOut" }}
+      />
+    </motion.svg>
+  );
+}
+
+function LoadingSpinner() {
+  return (
+    <svg
+      className="inline-block h-4 w-4 animate-spin"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <circle
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        className="opacity-25"
+      />
+      <path
+        d="M12 2a10 10 0 0 1 10 10"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        className="opacity-75"
+      />
+    </svg>
+  );
+}
 
 export default function PromptPackSignup() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -49,14 +115,20 @@ export default function PromptPackSignup() {
   if (status === "success") {
     return (
       <section id="free-prompt-pack" className="bg-brand-white-secondary px-6 py-20 md:py-28">
-        <div className="mx-auto max-w-2xl text-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4 }}
+          className="mx-auto max-w-2xl text-center"
+        >
+          <AnimatedCheckmark />
           <h2 className="mb-4 text-3xl font-bold text-brand-black">
             Check your inbox
           </h2>
           <p className="text-lg text-brand-black-secondary">
             The prompt pack is on its way.
           </p>
-        </div>
+        </motion.div>
       </section>
     );
   }
@@ -80,7 +152,7 @@ export default function PromptPackSignup() {
               key={item}
               className="flex items-start gap-3 text-brand-black-secondary"
             >
-              <span className="mt-1 block h-1.5 w-1.5 shrink-0 rounded-full bg-brand-black" />
+              <span className="mt-1 block h-1.5 w-1.5 shrink-0 rounded-full bg-brand-accent" />
               {item}
             </li>
           ))}
@@ -95,21 +167,27 @@ export default function PromptPackSignup() {
             type="text"
             placeholder="Your name"
             required
-            className="flex-1 rounded-lg border border-brand-divider bg-brand-white px-4 py-3 text-brand-black outline-none focus:border-brand-black-secondary"
+            className="flex-1 rounded-lg border border-brand-divider bg-brand-white px-4 py-3 text-brand-black outline-none transition-shadow duration-200 focus:border-brand-black-secondary focus:ring-2 focus:ring-brand-black/10"
           />
           <input
             name="signup-email"
             type="email"
             placeholder="Your email"
             required
-            className="flex-1 rounded-lg border border-brand-divider bg-brand-white px-4 py-3 text-brand-black outline-none focus:border-brand-black-secondary"
+            className="flex-1 rounded-lg border border-brand-divider bg-brand-white px-4 py-3 text-brand-black outline-none transition-shadow duration-200 focus:border-brand-black-secondary focus:ring-2 focus:ring-brand-black/10"
           />
           <button
             type="submit"
             disabled={status === "loading"}
-            className="shrink-0 rounded-lg bg-brand-black px-8 py-3 text-sm font-semibold text-brand-white transition-colors hover:bg-brand-black-secondary disabled:opacity-50"
+            className="shrink-0 rounded-lg bg-brand-accent px-8 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-brand-black hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100"
           >
-            {status === "loading" ? "Sending..." : "Send Me the Prompt Pack"}
+            {status === "loading" ? (
+              <span className="inline-flex items-center gap-2">
+                <LoadingSpinner /> Sending...
+              </span>
+            ) : (
+              "Join the Waitlist"
+            )}
           </button>
         </form>
 
