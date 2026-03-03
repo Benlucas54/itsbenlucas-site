@@ -32,7 +32,7 @@ const cardVariants = {
 
 export default function SolutionSection() {
   return (
-    <section className="bg-brand-white px-6 py-20 md:py-28">
+    <section className="bg-brand-white px-6 py-20 md:px-16 md:py-28 lg:px-24">
       <div className="mx-auto max-w-6xl">
         <h2 className="mb-6 text-3xl font-bold text-brand-black md:text-4xl">
           Here&apos;s what changed everything
