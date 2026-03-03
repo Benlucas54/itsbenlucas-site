@@ -1,7 +1,12 @@
+import HeadshotReveal from "./HeadshotReveal";
+
 export default function AboutSection() {
   return (
-    <section className="bg-brand-white px-6 py-20 md:py-28">
-      <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
+    <section className="bg-brand-white px-6 py-20 md:px-16 md:py-28 lg:px-24">
+      <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-[auto_1fr]">
+        <div className="flex items-center justify-center md:w-72">
+          <HeadshotReveal />
+        </div>
         <div>
           <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-brand-black-secondary">
             Who&apos;s behind this
@@ -23,11 +28,6 @@ export default function AboutSection() {
               now. Not theory from five years ago. Real builds, real results,
               documented in real time.
             </p>
-          </div>
-        </div>
-        <div className="flex items-center justify-center">
-          <div className="flex h-80 w-full items-center justify-center rounded-lg bg-brand-divider text-brand-black-secondary">
-            Profile image
           </div>
         </div>
       </div>
