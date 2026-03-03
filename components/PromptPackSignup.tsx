@@ -123,10 +123,10 @@ export default function PromptPackSignup() {
         >
           <AnimatedCheckmark />
           <h2 className="mb-4 text-3xl font-bold text-brand-black">
-            Check your inbox
+            Thank you for joining the waitlist
           </h2>
           <p className="text-lg text-brand-black-secondary">
-            The prompt pack is on its way.
+            You&apos;re in! We&apos;ll let you know when the prompt pack is ready.
           </p>
         </motion.div>
       </section>
