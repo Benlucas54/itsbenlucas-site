@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const WORDS = ["entrepreneur", "solopreneur", "promptpreneur"];
+const DEFINITION =
+  "1. Someone who uses AI prompts to build products, income streams, and businesses online.";
 
 export default function Home() {
   const [email, setEmail] = useState("");
@@ -12,6 +14,9 @@ export default function Home() {
   const [wordIndex, setWordIndex] = useState(0);
   const [introComplete, setIntroComplete] = useState(false);
   const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
+  const [typingStarted, setTypingStarted] = useState(false);
+  const [typedCount, setTypedCount] = useState(0);
+  const [typingDone, setTypingDone] = useState(false);
 
   // Word morph sequence
   useEffect(() => {
@@ -23,6 +28,29 @@ export default function Home() {
       return () => clearTimeout(timer);
     }
   }, [wordIndex]);
+
+  // Start typing after intro completes
+  useEffect(() => {
+    if (!introComplete) return;
+    const timer = setTimeout(() => setTypingStarted(true), 500);
+    return () => clearTimeout(timer);
+  }, [introComplete]);
+
+  // Typewriter interval
+  useEffect(() => {
+    if (!typingStarted) return;
+    const interval = setInterval(() => {
+      setTypedCount((prev) => {
+        if (prev >= DEFINITION.length) {
+          clearInterval(interval);
+          setTypingDone(true);
+          return prev;
+        }
+        return prev + 1;
+      });
+    }, 45);
+    return () => clearInterval(interval);
+  }, [typingStarted]);
 
   // Mouse glow tracker
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
@@ -68,14 +96,14 @@ export default function Home() {
       <div
         className="pointer-events-none fixed inset-0 z-0 hidden sm:block"
         style={{
-          background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(224, 90, 51, 0.07), transparent 80%)`,
+          background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(224, 90, 51, 0.09), transparent 80%)`,
         }}
       />
 
       <div className="relative z-10 max-w-2xl w-full text-center">
         {/* Word morph heading */}
-        <div className="mb-10">
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2 h-[1.3em] flex items-center justify-center">
+        <div className="mb-16">
+          <h1 className="font-serif text-4xl sm:text-5xl font-bold tracking-tight mb-2 h-[1.3em] flex items-center justify-center">
             <AnimatePresence mode="wait">
               <motion.span
                 key={WORDS[wordIndex]}
@@ -89,51 +117,69 @@ export default function Home() {
             </AnimatePresence>
           </h1>
 
-          {/* Content fades in after intro */}
+          {/* Pronunciation — fades in immediately on introComplete */}
           <AnimatePresence>
             {introComplete && (
-              <motion.div
+              <motion.p
+                className="font-serif text-sm text-neutral-500 mb-1 italic"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
               >
-                <p className="text-sm text-neutral-500 mb-1 italic">
-                  /prɒmpt·prə&apos;nɜːr/ &nbsp;·&nbsp; noun
-                </p>
-                <p className="text-base sm:text-lg text-neutral-300 leading-relaxed mt-4">
-                  Someone who uses AI prompts to build products, income streams, and
-                  businesses online.
-                </p>
-                <p className="text-sm text-neutral-500 mt-2">
-                  No tech background. No code. Just the right words — and the results
-                  speak for themselves.
-                </p>
-              </motion.div>
+                /prɒmpt·prə&apos;nɜːs/ &nbsp;·&nbsp; noun
+              </motion.p>
+            )}
+          </AnimatePresence>
+
+          {/* Definition — typewriter effect */}
+          {typingStarted && (
+            <p className="font-serif text-base sm:text-lg text-neutral-700 leading-relaxed mt-4">
+              {DEFINITION.slice(0, typedCount)}
+              {!typingDone && (
+                <span className="typing-cursor">|</span>
+              )}
+            </p>
+          )}
+
+          {/* Italic line — fades in after typing completes */}
+          <AnimatePresence>
+            {typingDone && (
+              <motion.p
+                className="text-sm text-neutral-500 mt-2 italic"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6 }}
+              >
+                No tech background. No code. Just the right words — and the results
+                speak for themselves.
+              </motion.p>
             )}
           </AnimatePresence>
         </div>
 
-        {/* Subtext + Form fade in after intro */}
+        {/* Subtext + Form fade in after typing completes */}
         <AnimatePresence>
-          {introComplete && (
+          {typingDone && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.15 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <p className="text-neutral-400 mb-8">
-                I&apos;m building something for promptpreneurs. Join the waitlist to
-                be first in.
+              <p className="text-neutral-500 mb-8">
+                The Promptpreneur Newsletter. Weekly AI insights for builders.
               </p>
 
               {status === "success" ? (
-                <motion.p
-                  className="text-brand-accent text-lg font-medium"
+                <motion.div
+                  className="text-brand-accent"
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                 >
-                  You&apos;re in. I&apos;ll be in touch.
-                </motion.p>
+                  <p className="text-lg font-medium">
+                    You&apos;re subscribed. First issue lands soon.
+                  </p>
+                  <p className="mt-2 text-sm">— Ben</p>
+                </motion.div>
               ) : (
                 <form
                   onSubmit={handleSubmit}
@@ -145,14 +191,14 @@ export default function Home() {
                     placeholder="Your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="flex-1 max-w-sm px-4 py-3 rounded-lg bg-neutral-900 border border-neutral-800 text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-brand-accent"
+                    className="flex-1 max-w-sm px-4 py-3 rounded-lg bg-white border border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-accent"
                   />
                   <button
                     type="submit"
                     disabled={status === "loading"}
                     className="px-6 py-3 rounded-lg bg-brand-accent text-white font-medium hover:brightness-110 transition-all disabled:opacity-50 cursor-pointer"
                   >
-                    {status === "loading" ? "Joining..." : "Join the Waitlist"}
+                    {status === "loading" ? "Subscribing..." : "Subscribe"}
                   </button>
                 </form>
               )}
@@ -166,7 +212,7 @@ export default function Home() {
       </div>
 
       {/* Footer */}
-      <p className="absolute bottom-6 text-neutral-600 text-xs">
+      <p className="absolute bottom-6 text-neutral-400 text-xs">
         &copy; 2026 Ben Lucas
       </p>
     </motion.main>

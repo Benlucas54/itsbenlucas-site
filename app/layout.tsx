@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Work_Sans } from "next/font/google";
+import { Work_Sans, Lora } from "next/font/google";
 import "./globals.css";
 
 const workSans = Work_Sans({
@@ -8,14 +8,20 @@ const workSans = Work_Sans({
   display: "swap",
 });
 
+const lora = Lora({
+  variable: "--font-lora",
+  subsets: ["latin"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "Promptpreneur — Join the Waitlist",
+  title: "The Promptpreneur Newsletter",
   description:
-    "I'm building something for promptpreneurs. Join the waitlist to be first in.",
+    "The Promptpreneur Newsletter. Weekly AI insights for builders.",
   openGraph: {
-    title: "Promptpreneur — Join the Waitlist",
+    title: "The Promptpreneur Newsletter",
     description:
-      "I'm building something for promptpreneurs. Join the waitlist to be first in.",
+      "The Promptpreneur Newsletter. Weekly AI insights for builders.",
     type: "website",
   },
 };
@@ -26,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={workSans.variable}>
+    <html lang="en" className={`${workSans.variable} ${lora.variable}`}>
       <body className="font-sans antialiased">{children}</body>
     </html>
   );
