@@ -9,13 +9,13 @@ const workSans = Work_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Promptpreneur | Learn to Build AI Apps and Make Money with Prompts",
+  title: "Promptpreneur — Join the Waitlist",
   description:
-    "I help regular people make their first money with AI - from zero to building and selling real products. No tech background needed.",
+    "I'm building something for promptpreneurs. Join the waitlist to be first in.",
   openGraph: {
-    title: "Promptpreneur | Learn to Build AI Apps and Make Money with Prompts",
+    title: "Promptpreneur — Join the Waitlist",
     description:
-      "I help regular people make their first money with AI - from zero to building and selling real products. No tech background needed.",
+      "I'm building something for promptpreneurs. Join the waitlist to be first in.",
     type: "website",
   },
 };

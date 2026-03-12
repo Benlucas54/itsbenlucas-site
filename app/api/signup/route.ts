@@ -3,12 +3,12 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email } = body;
+    const { email } = body;
 
     // Validate required fields
-    if (!name || !email) {
+    if (!email) {
       return NextResponse.json(
-        { error: "Please fill in all fields." },
+        { error: "Please enter your email address." },
         { status: 400 }
       );
     }
